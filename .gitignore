@@ -1,0 +1,22 @@
+.htaccess
+
+config.php
+/admin/config.php
+
+technaton.com.ua.rar
+
+.idea/
+
+download/
+/system/storage/cache/
+/system/storage/upload/
+/image/data/
+/image/cache/
+/system/storage/logs/
+
+# vQmod log files
+/vqmod/logs/*
+# vQmod cache files
+/vqmod/vqcache/*
+/vqmod/checked.cache
+/vqmod/mods.cache

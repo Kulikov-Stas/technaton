@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="62.669" height="49" viewBox="0 0 62.669 49">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="62.669" height="49" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Редактировать" clip-path="url(#clip-path)">
+    <g id="Group_379" data-name="Group 379">
+      <path id="Path_213" data-name="Path 213" d="M0,0H62.669V49H0Z" fill="#007DC4"/>
+    </g>
+    <g id="pencil-edit-button" transform="translate(20.367 13.157)" opacity="1">
+      <path id="Path_84" data-name="Path 84" d="M13.738,4.958l4.494,4.494L6.856,20.828,2.365,16.333Zm7.9-1.084-2-2a1.989,1.989,0,0,0-2.809,0l-1.92,1.92L19.4,8.284l2.239-2.239A1.532,1.532,0,0,0,21.642,3.874ZM.013,22.65a.511.511,0,0,0,.619.608L5.64,22.044,1.148,17.55Z" transform="translate(-0.001 -1.289)" fill="#fff"/>
+    </g>
+  </g>
+</svg>
