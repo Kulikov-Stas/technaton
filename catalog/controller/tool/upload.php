@@ -70,6 +70,7 @@ class ControllerToolUpload extends Controller {
 			$json['code'] = $this->model_tool_upload->addUpload($filename, $file);
 
 			$json['success'] = $this->language->get('text_upload');
+			$json['file'] = $file;
 		}
 
 		$this->response->addHeader('Content-Type: application/json');

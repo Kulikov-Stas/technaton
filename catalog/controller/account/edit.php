@@ -20,7 +20,7 @@ class ControllerAccountEdit extends Controller {
 
 		$this->load->model('account/customer');
 
-		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+		/*if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 			$this->model_account_customer->editCustomer($this->request->post);
 
 			$this->session->data['success'] = $this->language->get('text_success');
@@ -38,7 +38,7 @@ class ControllerAccountEdit extends Controller {
 			}
             $this->model_account_customer->editNewsletter(($this->request->post['newsletter'] == 'on') ? 1 : 0);
 			$this->response->redirect($this->url->link('common/home', 'ajax-popup-link-user', true));
-		}
+		}*/
 
 		$data['breadcrumbs'] = array();
 

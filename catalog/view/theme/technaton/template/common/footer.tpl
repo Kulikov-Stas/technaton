@@ -105,6 +105,30 @@
         </div>
     </div>
 </div>
+<a id="cartpop" href="#cart_popup" class="popup-wrapper">Вызвать окно с текстом</a>
+<div id="cart_popup" class="white-popup mfp-hide">
+    <div class="popup-wrapper">
+        <div class="popup-block">
+            <div class="lose-password">
+                <div class="shopping-btn close-btn">
+                    <svg id="exit" xmlns="http://www.w3.org/2000/svg" width="63.229" height="49" viewBox="0 0 63.229 49">
+                        <rect id="Rectangle_77" data-name="Rectangle 77" width="63.229" height="49" fill="#007dc4"></rect>
+                        <path id="Path_80" data-name="Path 80" d="M3.7-28.655l6.153,8.046.316.592.316-.592,6.153-8.046H19.52L11.671-18.321,19.52-8.106H16.641l-6.153-8.007-.316-.552-.316.552L3.7-8.106H.825L8.674-18.321.825-28.655Z" transform="translate(21.916 43.053)" fill="#fff"></path>
+                    </svg>
+                </div>
+                <div class="popup-content">
+                    <div class="success-wrapper">
+                        <img class="success-photo" src="catalog/view/theme/technaton/img/logo.png" alt="">
+                        <div class="success-discription">
+                            <h3 class="colorHeading H3 success-title"><span class="H3 " style="color: #007DC4;"> Darth Cat!</span></h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!--<footer>
   <div class="container">
     <div class="row">

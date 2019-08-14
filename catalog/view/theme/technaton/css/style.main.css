@@ -2595,7 +2595,7 @@ footer {
   align-items: center;
   justify-content: space-between;
 }
-#loginpop {
+#loginpop, #cartpop {
     display: none;
 }
 @media screen and (max-width: 1200px) {
@@ -5491,7 +5491,10 @@ footer {
 }
 .edit-profile-form .form-content .userPhoto-block img {
   width: 100%;
-  height: 100%;
+  /*height: 100%;*/
+}
+#edit-sbm {
+  cursor: pointer;
 }
 .edit-profile-form .form-content .userPhoto-block label {
   position: relative;

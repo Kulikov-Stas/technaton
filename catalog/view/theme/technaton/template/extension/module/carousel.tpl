@@ -30,7 +30,7 @@
                 <img class="discription-img" src="<?php echo $banner['image']; ?>" alt="<?php echo $banner['title']; ?>">
                 <button class="back-btn"></button>
                 <h2><?php echo $banner['title']; ?></h2>
-                <?php echo $banner['text']; ?>
+                <?php echo strip_tags(html_entity_decode($banner['text'])); ?>
                 <a href="<?php echo $banner['link']; ?>" class="news-link button">Перейти</a>
             </div>
             <?php } ?>

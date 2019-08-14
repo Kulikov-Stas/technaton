@@ -13,22 +13,24 @@
                             <h2><?php echo $heading_title; ?></h2>
                             <div class="sort-block">
                                 <form class="form-inline">
-                                    <select name="category" id="category">
+                                    <!--<select name="category" id="category">
                                         <option value="spareParts">По популярности</option>
                                         <option value="instruments">От дешевых к дорогим</option>
                                         <option value="consumables">От дорогих к дешевым</option>
                                         <option value="other">По номеру &#9650;</option>
                                         <option value="other">По номеру &#9660;</option>
-                                    </select>
+                                    </select>-->
                                     <button class="btn search-btn" type="button">
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="74" height="49" viewBox="0 0 74 49">
-                                            <defs>
-                                                <clipPath id="clip-path">
-                                                    <rect width="74" height="49" fill="none" />
-                                                </clipPath>
-                                            </defs>
-                                            <use xlink:href="#search_news_" x="0" y="0" />
-                                        </svg>
+                                        <a href="/search-form/" class="ajax-popup-search">
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="74" height="49" viewBox="0 0 74 49">
+                                                <defs>
+                                                    <clipPath id="clip-path">
+                                                        <rect width="74" height="49" fill="none" />
+                                                    </clipPath>
+                                                </defs>
+                                                <use xlink:href="#search_news_" x="0" y="0" />
+                                            </svg>
+                                        </a>
                                     </button>
                                 </form>
                             </div>
@@ -43,7 +45,7 @@
                                         <div class="news-discription">
                                             <div class="data-block">
                                                 <a href="<?php echo $article['href']; ?>" class="p"><?php echo $article['date']; ?></a>
-                                                <p> &#8212; <?php echo $article['speed']; ?><?php echo $text_speed; ?></p>
+                                                <p> &#8212; <?php echo $article['speed']; ?> <?php echo $text_speed; ?></p>
                                                 <?php /*if ($article['attributes']) { */?><!--
                                                     <h5><?php /*echo $text_attributes;*/?></h5>
                                                     <?php /*foreach ($article['attributes'] as $attribute_group) { */?>

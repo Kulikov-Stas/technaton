@@ -35,7 +35,7 @@
                                     <div class="text">
                                         <h1>
                                             <?php if ($manufacturer) { ?>
-                                            <li><?php echo $text_manufacturer; ?> <a href="<?php echo $manufacturers; ?>"><?php echo $manufacturer; ?></a></li>
+                                            <li><?php echo $text_manufacturer; ?> <a href="<?php echo $full_url; ?>"><?php echo $manufacturer; ?></a></li>
                                             <?php } ?>
                                         </h1>
                                         <h2><?php echo $heading_title; ?></h2>
@@ -152,12 +152,19 @@ $('.btn.basket').on('click', function() {
 			}
 
 			if (json['success']) {
-				$('section.pt-0').after('<div class="alert alert-success">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				/*$('section.pt-0').after('<div class="alert alert-success">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 
 				$('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
 
-				$('html, body').animate({ scrollTop: 0 }, 'slow');
-
+				$('html, body').animate({ scrollTop: 0 }, 'slow');*/
+                $('#cart_popup h3 span').html(json['success']);
+                setTimeout(function () {
+                    $('#cartpop').magnificPopup({
+                        type: 'inline'
+                    });
+                    $('#cartpop').trigger('click');
+                }, 1000);
+                $('.popup-wrapper').css('display', 'flex');
 				$('#cart > ul').load('index.php?route=common/cart/info ul li');
 			}
 		},

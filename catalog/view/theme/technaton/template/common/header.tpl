@@ -49,13 +49,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css" crossorigin="anonymous">
 <link rel="stylesheet" href="catalog/view/theme/technaton/css/owl.carousel.min.css">
 <link rel="stylesheet" href="catalog/view/theme/technaton/css/owl.theme.default.min.css">
-<link rel="stylesheet" href="catalog/view/theme/technaton/css/style.main.css">
+<link rel="stylesheet" href="catalog/view/theme/technaton/css/style.main.css?ver=14-08-2019">
 <!-- script -->
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <?php foreach ($scripts as $script) { ?>
     <script src="<?php echo $script; ?>" type="text/javascript"></script>
 <?php } ?>
-<script src="catalog/view/javascript/common.js" type="text/javascript"></script>
+<script src="catalog/view/javascript/common.js?ver=14-08-2019" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js'></script>
@@ -68,7 +68,7 @@
 <script src="catalog/view/javascript/jquery.magnific-popup.min.js"></script>
 <script src="catalog/view/javascript/owl.carousel.min.js"></script>
 
-<script src="catalog/view/javascript/script.js"></script>
+<script src="catalog/view/javascript/script.js?ver=14-08-2019"></script>
 <title>tehnaton</title>
 </head>
 

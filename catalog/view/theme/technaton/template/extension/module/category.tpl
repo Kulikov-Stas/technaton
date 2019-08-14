@@ -28,6 +28,21 @@
             <?php } ?>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            var href = window.location.href;
+            if (href.indexOf('?brand=') > -1) {
+                setTimeout(function () {
+                    $('#accordion li').each(function () {
+                        console.log($(this).find('a').attr('href'));
+                        if ($(this).find('a').attr('href') == href) {
+                            $(this).find('a').css('color', '#007DC4');
+                        }
+                    });
+                }, 100);
+            }
+        });
+    </script>
 <!--<div class="list-group">
   <?php /*foreach ($categories as $category) { */?>
   <?php /*if ($category['category_id'] == $category_id) { */?>

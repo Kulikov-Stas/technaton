@@ -48,6 +48,7 @@
                 </div>-->
             </div>
             <div class="content-block">
+                <?php if ($products) { ?>
                 <div class="left-col hide-480">
                     <p class="a"><?php echo $contacts_data; ?></p>
                     <form action="http://for-tests2.h1n.ru/testAjax/index4.html" method="POST" id="cart-order">
@@ -61,7 +62,7 @@
                             <input required type="text" name="telephone" value="<?php echo $telephone; ?>" placeholder="<?php echo $entry_telephone; ?>" id="input-payment-telephone" />
                         <textarea name="comment" id="comment" cols="30" rows="5" placeholder="<?php echo $entry_comment; ?>"></textarea>
                         <p><?php echo $contacts_string; ?></p>
-                        <input type="button" value="<?php echo $button_continue; ?>" id="button-guest" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary" disabled/>
+                        <input type="button" value="<?php echo $button_continue; ?>" id="button-guest" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary"/>
                     </form>
                 </div>
                 <div class="right-col">
@@ -81,9 +82,9 @@
                                         <p><?php echo $product['name']; ?></p>
                                     </div>
                                     <div class="price-wrapper">
-                                        <p class="price"><?php echo $product['price']; ?></p>
+                                        <p class="price"><?php $exp = explode(' ', $product['price']); array_pop($exp); echo implode('', $exp); ?></p>
                                         <input class="inp-price" type="number" name="quantity[<?php echo $product['cart_id']; ?>]" value="<?php echo $product['quantity']; ?>" min="1" max="99" step="1" />
-                                        <p class="sumPrice"><?php echo $product['total']; ?></p>
+                                        <p class="sumPrice"><?php $exp = explode(' ', $product['total']); array_pop($exp); echo implode('', $exp); ?></p>
                                     </div>
                                 </li>
                             <?php } ?>
@@ -92,12 +93,15 @@
 
                     <div class="total-block">
                         <p class="ralewayBold"><?php echo $column_total; ?></p>
-                        <p class="finPrice a"><?php echo $totals[1]['text']; ?></p>
+                        <p class="finPrice a"><?php $exp = explode(' ', $totals[1]['text']); array_pop($exp); echo implode('', $exp); ?></p>
                         <div class="link-wrapper">
                             <a href="<?php echo $checkout; ?>" class="toOrder">Оформить заказ</a>
                         </div>
                     </div>
                 </div>
+                <?php } else { ?>
+                    <h4>Нужно добавить товар прежде, чем сделать заказ.</h4>
+                <?php } ?>
             </div>
 
         </div>

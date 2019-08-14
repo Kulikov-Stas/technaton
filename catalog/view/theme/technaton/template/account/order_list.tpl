@@ -35,7 +35,7 @@
             </div>
             <div class="popup-content">
                 <div class="accordion" id="orders">
-                    <?php foreach ($orders as $order) { ?>
+                    <?php foreach ($orders as &$order) { ?>
                         <div class="order-item">
                         <div class="order-header">
                             <div class="wrapper">
@@ -64,7 +64,7 @@
                         </div>
                         <div class="order-discription collapse" data-parent="#orders" id="order-<?php echo $order['order_id']; ?>">
                             <ul class="order-list-history">
-                                <?php foreach ($order['products'] as $product) { ?>
+                                <?php foreach ($order['products'] as &$product) { ?>
                                     <li>
                                         <div class="left-col">
                                             <img src="<?php if (empty($product['image'])) echo '/system/storage/upload/Group 80.png'; else echo $image; ?>" alt="">
@@ -76,7 +76,7 @@
                                                     <p>№<?php echo $product['model']; ?></p>
                                                 </div>
                                                 <div class="price-wrapper">
-                                                    <div class="cost a"<?php echo $product['price']; ?></div>
+                                                    <div class="cost a"><?php echo $product['price']; ?></div>
                                                     <div class="wrapper">
                                                         <div class="amount"><?php echo $product['quantity']; ?> шт</div>
                                                         <div class="value a"><?php echo $product['total']; ?></div>
