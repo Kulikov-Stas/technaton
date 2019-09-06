@@ -49,7 +49,10 @@
             </div>
             <div class="content-block">
                 <?php if ($products) { ?>
+<<<<<<< HEAD
 
+=======
+>>>>>>> b2bc92b46b68cc3377733f0ed25b758163016ee4
                 <div class="left-col hide-480">
                     <p class="a"><?php echo $contacts_data; ?></p>
                     <form action="http://for-tests2.h1n.ru/testAjax/index4.html" method="POST" id="cart-order">
@@ -102,7 +105,10 @@
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> b2bc92b46b68cc3377733f0ed25b758163016ee4
                 <?php } else { ?>
                     <h4>Нужно добавить товар прежде, чем сделать заказ.</h4>
                 <?php } ?>
