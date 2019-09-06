@@ -243,6 +243,7 @@ a:hover {
 }
 .container {
   max-width: 1640px;
+    padding: 0 50px;
 }
 .green {
     color: forestgreen;
@@ -250,9 +251,12 @@ a:hover {
 .navbar {
     justify-content: flex-end;
 }
+.menu .navbar {
+    justify-content: space-between;
+}
 @media screen and (max-width: 1024px) {
   .container {
-    width: 85%;
+    /*width: 85%;*/
     margin: 0 auto;
   }
 }
@@ -384,6 +388,7 @@ a:hover {
 @media screen and (max-width: 991px) {
   .menuIconBlock {
     margin-top: -25px;
+    margin-right: 30px;
   }
 }
 @media screen and (max-width: 768px) {
@@ -483,8 +488,7 @@ button:focus {
   }
 }
 .mainBaner-container {
-  /*max-height: 1080px;*/
-  max-height: 550px;
+  max-height: 1080px;
   margin: 0 auto;
   width: 100%;
   max-width: 1640px;
@@ -527,8 +531,8 @@ button:focus {
 .mainBaner-container .text-block {
   display: flex;
   justify-content: center;
-  /*padding-top: 27vw;*/
-  padding-top: 18vw;
+  padding-top: 27vw;
+  /*padding-top: 18vw;*/
 }
 .mainBaner-container .text-block p {
   font-size: 42px;
@@ -643,9 +647,7 @@ button:focus {
   display: flex;
   justify-content: center;
   height: 15vw;
-  /*align-items: flex-end;*/
-  align-items: center;
-  margin-bottom: 30px;
+  align-items: flex-end;
 }
 .mainBaner-container .scrollMouse #Group_45 {
   animation: mouseAnim 2s infinite;
@@ -1494,6 +1496,7 @@ main section {
     height: 30px;
   }
 }
+
 footer {
   padding-top: 150px;
   padding-bottom: 50px;
@@ -1501,6 +1504,7 @@ footer {
   margin-top: unset;
   border-top: none;
   color: unset;
+  
 }
 @media screen and (max-width: 1024px) {
   footer {
@@ -1628,8 +1632,10 @@ footer {
   content: "Инструкция";
   position: absolute;
   text-transform: uppercase;
-  top: -65px;
-  left: -500px;
+  /*top: -65px;
+  left: -500px;*/
+  top: -3.385vw !important;
+  left: -26.042vw !important;
   color: rgba(0, 125, 196, 0.05);
   font-size: 6.5vw;
   z-index: 1;
@@ -2097,10 +2103,12 @@ footer {
   margin-bottom: 1vw;
   transition: 0.3s;
   font-size: 14px;
+  margin-top: 30px;
 }
 @media screen and (max-width: 768px) {
   .partners-block .carousel-third-wrapper .sliderItem .news-link {
     margin: 0 auto;
+    margin-top: 30px;
   }
 }
 .partners-block .carousel-third-wrapper .sliderItem .news-link:hover {
@@ -2594,8 +2602,9 @@ footer {
   background: #fff;
   align-items: center;
   justify-content: space-between;
+  padding-top: 10px;
 }
-#loginpop {
+#loginpop, #cartpop {
     display: none;
 }
 @media screen and (max-width: 1200px) {
@@ -2758,6 +2767,7 @@ footer {
   margin-bottom: 40px;
   background: #fff;
   align-items: center;
+  padding-top: 10px;
 }
 .main-content .content-block .w50 .catalog-item .img-wrapper {
   display: -webkit-box;
@@ -2802,6 +2812,7 @@ footer {
   text-align: center;
   color: #fff;
   transition: 0.3s;
+  align-self: flex-end;
 }
 @media screen and (max-width: 640px) {
   .catalog-open-main .header-banner {
@@ -3306,6 +3317,9 @@ footer {
   background: rgba(246, 248, 251, 0.9);
   display: flex;
   flex-direction: column;
+}
+.cart-popup-block .navbar{
+  justify-content: flex-end;
 }
 @media screen and (max-width: 480px) {
   .cart-popup-block .lang {
@@ -4141,6 +4155,8 @@ footer {
 .orders-history-block {
   background: #F6F8FB;
   max-height: 750px;
+  height: 500px;
+  overflow: hidden;
 }
 @media screen and (max-width: 768px) {
   .orders-history-block {
@@ -5491,7 +5507,10 @@ footer {
 }
 .edit-profile-form .form-content .userPhoto-block img {
   width: 100%;
-  height: 100%;
+  /*height: 100%;*/
+}
+#edit-sbm {
+  cursor: pointer;
 }
 .edit-profile-form .form-content .userPhoto-block label {
   position: relative;
@@ -6011,7 +6030,7 @@ label.error:before {
   height: 105px;*/
   /*width: 117px;
   height: 74px;*/
-  border-radius: 50%;
+  /*border-radius: 50%;*/
   margin-right: 20px;
 }
 .well {

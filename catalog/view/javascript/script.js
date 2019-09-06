@@ -270,7 +270,7 @@ $(document).ready(function() {
         })
 
         $("input[type='number']").inputSpinner();
-        $(".btn-decrement").attr("disabled", "disabled");
+        //$(".btn-decrement").attr("disabled", "disabled");
 
         //sum price    
         $(document).on("change", ".card-amount", function(){
@@ -345,6 +345,7 @@ $(document).ready(function() {
                         railpadding: { top: 0, right: -15, left: 0, bottom: 0 },
                         autohidemode: false
                     });
+
                     //spinner button
                     if ($("input[type='number']").length > 0) {
                         $(".inp-price").inputSpinner();
@@ -356,7 +357,7 @@ $(document).ready(function() {
                         });*/
                     //sum price    
                         $(".price-wrapper .input-group .form-control").attr("readonly", "readonly");
-                        $(".btn-decrement").attr("disabled", "disabled");
+                        //$(".btn-decrement").attr("disabled", "disabled");
                         function totalPrice(inpVal) {
                             	var sum = 0;
                                 var inpvalue = inpVal.val();
@@ -388,6 +389,15 @@ $(document).ready(function() {
                     //form style
                     $('#input-payment-telephone').mask("+38 (999) 999 99 99", { placeholder: " " });
                     var form = $("#cart-order");
+
+                    var name = $("#input-payment-firstname").val();
+                    var surname = $("#input-payment-email").val();
+                    var phone = $("#input-payment-telephone").val();
+                    var btn = $("#button-guest");
+                    validForm(form);
+                    checkParams(name, surname, phone, btn, form);
+                    $('#button-guest').css({ "background": "#007DC4", "color": "#fff", "transition": ".3s" }).addClass("hoverBtn");
+
                     $(".content-block input").on("keyup", function() {
 
                         $(this).css({ "background": "#007DC4", "color": "#fff", "transition": ".3s" });
@@ -401,6 +411,7 @@ $(document).ready(function() {
                         validForm(form);
                         checkParams(name, surname, phone, btn, form);
                     });
+
                     //lang btn
                     $(".lang .btn").on("click", function() {
                         if (!$(this).hasClass("activeBtn")) {
@@ -770,11 +781,15 @@ $(document).ready(function() {
                         console.log('form submitted.');
                         $('#exit').trigger('click');
                         $('#new_customer_popup h3 span').html($("#input-firstname").val());
+                        var i = 0;
                         setTimeout(function () {
                             $('#new_customer').magnificPopup({
                                 type: 'inline'
                             });
-                            $('#new_customer').trigger('click');
+                            if (i == 0) {
+                                $('#new_customer').trigger('click');
+                                i++;
+                            }
                         }, 1000);
 
                     }
@@ -822,11 +837,14 @@ $(document).ready(function() {
                     console.log('form submitted');
                     $('#exit').trigger('click');
                     $('#login_popup h3 span').html(' ' + localStorage['input-email']);
+                    var i = 0;
                     setTimeout(function () {
                         $('#loginpop').magnificPopup({
                             type: 'inline'
                         });
-                        $('#loginpop').trigger('click');
+                        if (i == 0) {
+                            $('#loginpop').trigger('click');
+                        }
                     }, 1000);
                     $('.popup-wrapper').css('display', 'flex');
                 }
@@ -902,8 +920,9 @@ $(document).ready(function() {
                                         //alert(json['success']);
 
                                         $('input[name="custom_field[1]"]').val(json['code']);
-                                        console.log(json['code']);
-                                        $('.edit-profile-form').submit();
+                                        //console.log(json['code']);
+                                        //$('.edit-profile-form').submit();
+                                        $('.userPhoto-block img').attr('src', '/system/storage/upload/' + json['file']);
                                     }
                                 },
                                 error: function (xhr, ajaxOptions, thrownError) {
@@ -942,6 +961,29 @@ $(document).ready(function() {
 
                 });
             });*/
+            $('#edit-sbm').click(function () {
+                console.log('edit');
+                var popupContainer = $(this).parents(".mfp-content")[0];
+                $.ajax({
+                    url: 'index.php?route=ajax/index/ajaxEditProfile',
+                    type: 'post',
+                    data: {
+                        'firstname' : $('input[name="firstname"]').val(),
+                        'telephone' : $('input[name="telephone"]').val(),
+                        'custom_field[1]' : $('input[name="custom_field[1]"]').val(),
+                        'custom_field[2]' : $('input[name="custom_field[2]"]').val(),
+                        'email' : $('input[name="email"]').val(),
+                        'newsletter' : $('input[name="newsletter"]').val()
+                    },
+                    success: function(data) {
+                        profile(popupContainer);
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                });
+                return false;
+            });
         });
     }
 
@@ -1057,29 +1099,41 @@ $(document).ready(function() {
                     $(this).siblings(".order-header").find(".arrow").css({
                         "transform": "rotateX(0deg)"
                     });
-                    if ($(this).siblings().find(".status-block").hasClass("delivered")) {
+                    if ($(this).siblings().find(".status-block").hasClass("Shipped") || $(this).siblings().find(".status-block").hasClass("Доставлено")) {
                         $(this).siblings().find(".status-block p").text("ДОСТАВЛЕНО");
                         $(this).siblings().find(".status-block img").remove();
-                        $(this).siblings().find(".status-block").css("background", "url(img/delivered.svg) #007DC4 no-repeat");
-                    } else if ($(this).siblings().find(".status-block").hasClass("preparation")) {
-                        $(this).siblings().find(".status-block").css("background", "url(img/prepearing.svg) #D95050 no-repeat");
+                        $(this).siblings().find(".status-block").css("background", "url(catalog/view/theme/technaton/img/delivered.svg) #007DC4 no-repeat");
+                    } else if ($(this).siblings().find(".status-block").hasClass("Pending") || $(this).siblings().find(".status-block").hasClass("Ожидание")) {
+                        $(this).siblings().find(".status-block").css("background", "url(catalog/view/theme/technaton/img/prepearing.svg) #D95050 no-repeat");
                         $(this).siblings().find(".status-block p").text("ПОДГОТОВКА К ОТПРАВКЕ");
                         $(this).siblings().find(".status-block img").remove();
                         $(this).siblings().find(".status-block .preparation-title").remove();
                         $(this).siblings().find(".status-block .delivery-date").remove();
-                    } else if ($(this).siblings().find(".status-block").hasClass("sent")) {
-                        $(this).siblings().find(".status-block").css("background", "url(img/sent.svg) #4FC179 no-repeat");
+                    } else if ($(this).siblings().find(".status-block").hasClass("Complete") || $(this).siblings().find(".status-block").hasClass("Сделка завершена")) {
+                        $(this).siblings().find(".status-block").css("background", "url(catalog/view/theme/technaton/img/sent.svg) #4FC179 no-repeat");
                         $(this).siblings().find(".status-block p").text("ОТПРАВЛЕНО");
                         $(this).siblings().find(".status-block img").remove();
                         $(this).siblings().find(".status-block .preparation-title").remove();
                         $(this).siblings().find(".status-block .sent-date").remove();
                     }
                 });
+                var i = 0;
+                //back to profile
+                $(document).on("click", ".return", function(e) {
+                    e.preventDefault();
+                    console.log('return');
+                    console.log(i);
+                    if (i == 0) {
+                        $(this).parents(".mfp-content").load("/my-account/", function() {});
+                        i++;
+                    }
+
+                });
             };
 
 
             //price in history orders
-            if ($(".orders-history-block").length > 0) {
+            /*if ($(".orders-history-block").length > 0) {
                 var orders = $(".order-item");
                 orders.each(function() {
                     var order = $(this).find("li");
@@ -1097,7 +1151,7 @@ $(document).ready(function() {
 
                 });
 
-            }
+            }*/
 
 
             //log out
@@ -1107,11 +1161,7 @@ $(document).ready(function() {
 
                 });
             });*/
-            //back to profile
-            $(document).on("click", ".return", function(e) {
-                var popupContainer = $(this).parents(".mfp-content")[0];
-                profile(popupContainer);
-            });
+
         });
     }
 
@@ -1197,6 +1247,7 @@ $(document).ready(function() {
     $(document).on("click", "#exit", function(e) {
         e.preventDefault();
         //window.history.back();
+        magnificPopup = $.magnificPopup.instance;
         magnificPopup.close();
     });
 
@@ -1204,11 +1255,11 @@ $(document).ready(function() {
     function checkParams(name, surname, phone, btn, form) {
 
         if (name.length > 0 && surname.length > 0 && phone.length > 0 && form.valid()) {
-            $(btn).removeAttr("disabled");
-            $(btn).css({ "background": "#007DC4", "color": "#fff", "transition": ".3s" }).addClass("hoverBtn");
+            $('btn').removeAttr("disabled");
+            $('btn').css({ "background": "#007DC4", "color": "#fff", "transition": ".3s" }).addClass("hoverBtn");
         } else {
-            $(btn).attr("disabled", "disabled");
-            $(btn).css({ "background": "#B2B2B2", "color": "#6A6A6A", "transition": ".3s" }).removeClass("hoverBtn");
+            $('btn').attr("disabled", "disabled");
+            $('btn').css({ "background": "#B2B2B2", "color": "#6A6A6A", "transition": ".3s" }).removeClass("hoverBtn");
         }
 
         // submit for cart-order mobile

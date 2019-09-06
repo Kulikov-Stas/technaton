@@ -158,6 +158,7 @@ class ControllerCheckoutCart extends Controller {
 				}
 
 				$data['products'][] = array(
+				    'product_id'=> $product['product_id'],
 					'cart_id'   => $product['cart_id'],
 					'thumb'     => $image,
 					'name'      => $product['name'],
@@ -271,7 +272,6 @@ class ControllerCheckoutCart extends Controller {
                 $this->load->model('account/customer');
                 $customer_info = $this->model_account_customer->getCustomer($this->session->data['customer_id']);
             }
-
         if (isset($this->request->post['firstname'])) {
             $data['firstname'] = $this->request->post['firstname'];
         } elseif (!empty($customer_info)) {
@@ -312,6 +312,13 @@ class ControllerCheckoutCart extends Controller {
             $data['fax'] = '';
         }
 
+        if (isset($this->request->post['address_1'])) {
+            $data['address_1'] = $this->request->post['address_1'];
+        } elseif (!empty($customer_info)) {
+            $data['address_1'] = $customer_info['address_1'];
+        } else {
+            $data['address_1'] = '';
+        }
         // Custom Fields
         $this->load->model('account/custom_field');
 
@@ -410,7 +417,8 @@ class ControllerCheckoutCart extends Controller {
 			if (!$json) {
 				$this->cart->add($this->request->post['product_id'], $quantity, $option, $recurring_id, 230);
 
-				$json['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . $this->request->post['product_id']), $product_info['name'], $this->url->link('checkout/cart'));
+				//$json['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . $this->request->post['product_id']), $product_info['name'], $this->url->link('checkout/cart'));
+                $json['success'] = sprintf($this->language->get('text_success'), $product_info['name']);
 
 				// Unset all shipping and payment methods
 				unset($this->session->data['shipping_method']);
@@ -491,7 +499,7 @@ class ControllerCheckoutCart extends Controller {
 			unset($this->session->data['payment_methods']);
 			unset($this->session->data['reward']);
 
-			$this->response->redirect($this->url->link('checkout/cart'));
+			//$this->response->redirect($this->url->link('checkout/cart'));
 		}
 
 		$this->response->addHeader('Content-Type: application/json');

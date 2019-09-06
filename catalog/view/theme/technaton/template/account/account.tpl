@@ -32,7 +32,7 @@
             <div class="popup-content">
                 <div class="main-info">
                     <div class="photo-block">
-                        <img src="/system/storage/upload/<?php if (empty($image)) echo 'Group 80.png'; else echo $image; ?>" alt="">
+                        <img src="/system/storage/upload/<?php if (empty($image)) echo '80de3bd7715d68a93195d9bbddf2a157.jpg'; else echo $image; ?>" alt="">
                     </div>
                     <div class="info-block">
                         <div class="name a"><?php echo $firstname; ?></div>

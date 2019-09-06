@@ -636,6 +636,8 @@ class ControllerProductProduct extends Controller {
                 );
                 //}
             }
+
+            $data['full_url'] = $data['breadcrumbs'][1]['href'] . '?brand=' . $product_info['manufacturer_id'];
 			$this->response->setOutput($this->load->view('product/product', $data));
 		} else {
 			$url = '';

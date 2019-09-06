@@ -91,7 +91,7 @@ class ControllerAccountOrder extends Controller {
             $order_info = $this->model_account_order->getOrder($order['order_id']);
             $products = $this->model_account_order->getOrderProducts($order['order_id']);
             $order['products'] = array();
-            foreach ($products as $product) {
+            foreach ($products as &$product) {
 
                 $product_info = $this->model_catalog_product->getProduct($product['product_id']);
 

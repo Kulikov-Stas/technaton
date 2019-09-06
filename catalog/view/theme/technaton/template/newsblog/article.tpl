@@ -36,7 +36,7 @@
                 <div class="row">
                     <div class="news-wrapper news-page">
                         <div class="oneNews-heading">
-                            <h3 class="colorHeading"<?php echo $text_related; ?></h3>
+                            <h3 class="colorHeading"><?php echo $text_related; ?></h3>
                         </div>
                         <div class="news-block">
                                 <?php foreach ($articles as $article) { ?>
@@ -44,7 +44,7 @@
                                         <div class="news-img" style="background-image: url(/image/<?php if ($article['image']) echo $article['image'][0]['image']; ?>);"></div>
                                         <div class="news-discription">
                                             <div class="data-block">
-                                                <a href="<?php echo $article['href']; ?>" class="p">24.04.2019</a>
+                                                <a href="<?php echo $article['href']; ?>" class="p"><?php echo $article['date']; ?></a>
                                                 <p> &#8212; <?php echo $article['speed']; ?> мин. на чтение</p>
                                             </div>
                                             <div class="oneNews-heading">
@@ -53,7 +53,7 @@
                                             <div class="news-text">
                                                 <p><?php echo $article['preview']; ?></p>
                                             </div>
-                                            <a href="<?php echo $article['href']; ?>" class="news-link button">Подробнее</a>
+                                            <a href="<?php echo $article['href']; ?>" class="news-link button"><?php echo $button_continue; ?></a>
                                         </div>
                                     </div>
 

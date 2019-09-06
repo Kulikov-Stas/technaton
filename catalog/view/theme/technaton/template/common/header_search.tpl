@@ -16,7 +16,6 @@
                             <input type="text" name="search" value="<?php echo $search; ?>" placeholder="<?php echo $text_keyword; ?>" id="input-search" class="form-control" />
                         </div>
                         <select name="category_id" id="category">
-                            <option value="0"><?php echo $text_category; ?></option>
                             <?php $i = 0;
                                 foreach ($categories as $category_1) { ?>
                                 <?php //if ($category_1['category_id'] == $category_id) {

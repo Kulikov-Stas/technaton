@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="catalog-wrapper">
                     <div class="heading-block">
-                        <h2>КАТАЛОГ</h2>
+                        <h2><?php echo $text_shop; ?></h2>
                     </div>
 
                     <div class="content-block">
@@ -53,11 +53,8 @@
                                 <?php } ?>
                             <?php } ?>
 
-                            <?php if (!$categories && !$products) { ?>
+                            <?php if (!$products) { ?>
                                 <p><?php echo $text_empty; ?></p>
-                                <div class="buttons">
-                                    <div class="pull-right"><a href="<?php echo $continue; ?>" class="btn btn-primary"><?php echo $button_continue; ?></a></div>
-                                </div>
                             <?php } ?>
                         </div>
                     </div>
@@ -81,7 +78,7 @@
             <div class="row">
                 <div class="news-wrapper news-page">
                     <div class="heading-block ">
-                        <h2>Новости</h2>
+                        <h2><?php echo $text_news; ?></h2>
                     </div>
                     <div class="news-block">
                         <?php if ($articles) { ?>
@@ -114,13 +111,13 @@
                             } ?>
                         <?php } ?>
                     </div>
-                    <?php if (!$categories && !$articles) { ?>
-                        <p><?php echo $text_empty; ?></p>
-                        <div class="buttons">
-                            <div class="pull-right"><a href="<?php echo $continue; ?>" class="btn btn-primary"><?php echo $button_continue; ?></a></div>
+                    <?php if (!$articles) { ?>
+                        <div class="content-block">
+                            <div class="wrapper-tems w30">
+                                <p><?php echo $text_empty; ?></p>
+                            </div>
                         </div>
                     <?php } ?>
-                    </div>
                 </div>
             </div>
     </section>
@@ -129,7 +126,7 @@
             <div class="row">
                 <div class="paganation-wrapper">
                     <nav aria-label="News navigation">
-                        <?php echo $news_pagination; ?>
+                        <?php if (isset($articles)) echo $news_pagination; ?>
                     </nav>
                 </div>
             </div>

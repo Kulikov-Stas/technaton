@@ -15,7 +15,7 @@
                         $i = 0;
                         ?>
                         <?php foreach ($articles as $article) { ?>
-                            <div class="oneNews<?php if ($i === 0) echo ' big-news'; ?>">
+                            <div class="oneNews<?php if ($i === 0) echo ' big-news'; else echo ' smallNews';  ?>">
                                 <div class="news-img" style="background-image: url(/image/<?php if ($article['image']) echo $article['image'][0]['image']; ?>);"></div>
                                 <div class="news-discription">
                                     <div class="data-block">

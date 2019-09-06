@@ -126,7 +126,6 @@ class ControllerNewsBlogArticle extends Controller {
 			$data['text_related'] = $this->language->get('text_related');
 			$data['text_related_products'] = $this->language->get('text_related_products');
 			$data['text_attributes'] = $this->language->get('text_attributes');
-
 			//for related products
 			$this->load->language('product/product');
 			$data['text_tax'] = $this->language->get('text_tax');
@@ -205,7 +204,7 @@ class ControllerNewsBlogArticle extends Controller {
 						'preview'     		=> html_entity_decode($result['preview'], ENT_QUOTES, 'UTF-8'),
 						'attributes'  		=> $result['attributes'],
 						'href'        		=> $this->url->link('newsblog/article', 'newsblog_path=' . $mainCategoryId . '&newsblog_article_id=' . $result['article_id']),
-						'date'		  		=> ($date_format ? date($date_format, strtotime($result['date_available'])) : false),
+						'date'		  		=> ($date_format ? explode(' ', date($date_format, strtotime($article_info['date_available'])))[0] : false),
 						'date_modified'		=> ($date_format ? date($date_format, strtotime($result['date_modified'])) : false),
 						'viewed' 			=> $result['viewed'],
                         'image'             => $result['image'],
@@ -306,6 +305,7 @@ class ControllerNewsBlogArticle extends Controller {
 			$template_default='article.tpl';
 			if ($settings && $settings['template_article']) $template_default=$settings['template_article'];
             $this->feedback();
+            $data['button_continue'] = $this->language->get('button_continue');
 			$this->response->setOutput($this->load->view('newsblog/'.$template_default, $data));
 		} else {
 			$url = '';
@@ -328,8 +328,6 @@ class ControllerNewsBlogArticle extends Controller {
 			$data['heading_title'] = $this->language->get('text_error');
 
 			$data['text_error'] = $this->language->get('text_error');
-
-			$data['button_continue'] = $this->language->get('button_continue');
 
 			$data['continue'] = $this->url->link('common/home');
 
