@@ -81,7 +81,7 @@ class ModelCatalogProduct extends Model {
 		ON (pa.product_id = p.product_id)";
 		$sql .= " LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' ";
 
-        if ((int)$data['filter_category_id'] != 60) {
+        if (!((int)$data['filter_category_id'] == 60 && !empty($data['filter_manufacturer_id']))) {
             $sql .= " AND pa.attribute_id is NULL ";
         }
 
@@ -164,7 +164,7 @@ class ModelCatalogProduct extends Model {
 		}
 
 		$sql .= " GROUP BY p.product_id";
-echo $sql;
+
 		$sort_data = array(
 			'pd.name',
 			'p.model',
