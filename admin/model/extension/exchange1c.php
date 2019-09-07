@@ -4630,7 +4630,7 @@ class ModelExtensionExchange1c extends Model {
     private function parseModels($xml, $classifier) {
 
         if (!$xml->Модель) {
-            $this->ERROR = "parseProducts() - empty XML";
+            //$this->ERROR = "parseProducts() - empty XML";
             return false;
         }
 
@@ -4752,6 +4752,283 @@ class ModelExtensionExchange1c extends Model {
             }*/
 
             $data['product_categories'][0] = 59;
+
+            // Если включено обновление производителя
+            if ($this->config->get('exchange1c_import_product_manufacturer') == 1) {
+
+                $manufacturer_id = $this->getProductManufacturerId($product, $product->ИдБренда);
+
+                if ($manufacturer_id) {
+                    $data['manufacturer_id'] = $manufacturer_id;
+                }
+            }
+
+            // Статус, только для товара
+            // Статус по-умолчанию при отсутствии товара на складе
+            // Можно реализовать загрузку из свойств
+            if ($this->config->get('exchange1c_default_stock_status')) {
+                $data['stock_status_id'] = $this->config->get('exchange1c_default_stock_status');
+            }
+
+            // Свойства, только для товара
+            //if ($product->ЗначенияСвойств && isset($classifier['attributes']))
+            if ($product->ЗначенияСвойств) {
+                $this->parseAttributes($product->ЗначенияСвойств, $data, $classifier);
+                if ($this->ERROR) return false;
+            }
+
+            // КАРТИНКИ
+            // Если включено обновлять картинки
+            if ($this->config->get('exchange1c_product_images_import_mode') != 'disable') {
+
+                // Описание файлов
+                $description = isset($data['description_files']) ? $data['description_files'] : array();
+
+                // Картинки, только для товара
+                if ($product->Картинка) {
+
+                    $images = isset($data['images']) ? $data['images'] : array();
+                    $data['images'] = $this->parseImages($product->Картинка, $images, $description);
+
+                    if ($this->ERROR) return false;
+
+                } // if ($product->Картинка)
+
+                // Картинки, только для товара (CML 2.04)
+                if ($product->ОсновнаяКартинка) {
+
+                    $images = isset($data['images']) ? $data['images'] : array();
+                    $data['images'] = $this->parseImages($product->ОсновнаяКартинка, $images, $description);
+
+                    if ($this->ERROR) return false;
+
+                    // дополнительные, когда элементы в файле называются <Картинка1>, <Картинка2>...
+                    $cnt = 1;
+                    $var = 'Картинка'.$cnt;
+
+                    while (!empty($product->$var)) {
+
+                        $data['images'] = $this->parseImages($product->$var, $data['images'], $description);
+                        if ($this->ERROR) return false;
+
+                        $cnt++;
+                        $var = 'Картинка'.$cnt;
+                    }
+
+                } // if ($product->ОсновнаяКартинка)
+
+                // Освобождаем память
+                unset($description);
+
+                // Основная картинка
+                if (isset($data['images'][0])) {
+                    $data['image'] = $data['images'][0]['file'];
+                } else {
+                    // если картинки нет подставляем эту
+                    $data['image'] = 'no_image.png';
+                }
+
+            } else {
+                $this->log("[i] Обновление картинок отключено!", 2);
+            }
+
+            // Штрихкод
+            if ($product->Штрихкод) {
+                $data['ean'] =  (string)$product->Штрихкод;
+            }
+
+            // Базовая единица товара
+            if ($product->БазоваяЕдиница) {
+
+                // Базовая единица товара
+                $data['unit'] = $this->parseProductUnit($product->БазоваяЕдиница);
+                if ($this->ERROR) return false;
+
+            } // $product->БазоваяЕдиница
+
+            // Отзывы парсятся с Яндекса в 1С, а затем на сайт
+            // Доработка от SunLit (Skype: strong_forever2000)
+            // Отзывы
+            if ($product->ЗначенияОтзывов) {
+                $data['review'] = $this->parseReview($data, $product->ЗначенияОтзывов);
+                if ($this->ERROR) return false;
+            }
+
+            // Добавляем или обновляем товар в базе
+            $this->setProduct($data);
+            if ($this->ERROR) return false;
+
+            // Освобождаем память
+            unset($data);
+
+            // Прерывание обмена
+            if (file_exists(DIR_CACHE . 'exchange1c/break')) {
+                $this->ERROR = "parseProducts() - file exists 'break'";
+                return false;
+            }
+        } // foreach
+
+        // Отключим товары не попавшие в обмен только при полной выгрузке
+        if ($this->config->get('exchange1c_product_not_import_disable') == 1 && $this->FULL_IMPORT) {
+
+            $products_disable = array();
+            $query = $this->query("SELECT `product_id` FROM `" . DB_PREFIX . "product` WHERE `date_modified` < '" . $this->NOW . "'");
+            $num = 0;
+
+            // Эта переменная указывает сколько товаров может отключать за один запрос.
+            $num_part = 1000;
+
+            if ($query->num_rows) {
+
+                foreach ($query->rows as $row) {
+                    $products_disable[] = $row['product_id'];
+
+                    if (count($products_disable) >= $num_part) {
+                        $this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 0 WHERE `product_id` IN (" . (implode(",",$products_disable)) . ")");
+                        $products_disable = array();
+                        $num += count($products_disable);
+                    }
+                }
+
+                if ($products_disable) {
+                    $this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 0 WHERE `product_id` IN (" . (implode(",",$products_disable)) . ")");
+                    $num += count($products_disable);
+                }
+
+            }
+
+            $this->log("Отключены товары которых нет в выгрузке: " . $num);
+        }
+
+        return true;
+
+    }
+
+    private function parseDetails($xml, $classifier) {
+
+        if (!$xml->ВидДетали) {
+            $this->ERROR = "parseProducts() - empty XML";
+            return false;
+        }
+
+        foreach ($xml->ВидДетали as $product){
+
+            $data = array();
+
+            // Получаем Ид товара и характеристики
+            $guid_full = explode("#", (string)$product->Ид);
+            $data['product_guid']	= $guid_full[0];
+            $data['feature_guid']	= isset($guid_full[1]) ? $guid_full[1] : '';
+            $data['product_id'] 	= 0;
+//			$data['mpn']			= $data['product_guid'];
+            $data['name']			= htmlspecialchars((string)$product->Наименование);
+
+            // Единица измерения длины товара
+            if ($this->config->get('config_length_class_id')) {
+                $data['length_class_id']	= $this->config->get('config_length_class_id');
+            }
+
+            // Единица измерения веса товара
+            if ($this->config->get('config_weight_class_id')) {
+                $data['weight_class_id']	= $this->config->get('config_weight_class_id');
+            }
+
+            $this->log("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -", 2);
+            if ($data['feature_guid']) {
+                $this->log("ТОВАР: Ид: '" . $data['product_guid'] . "', ХАРАКТЕРИСТИКА Ид: '" . $data['feature_guid'] . "'");
+            } else {
+                $this->log("ТОВАР: Ид: '" . $data['product_guid'] . "'");
+            }
+
+            // есть ли в предложении характеристики
+            if ($product->ХарактеристикиТовара) {
+                $result = $this->parseFeatures($product->ХарактеристикиТовара, $data);
+                if (count($result)) $data['features'] = $result;
+                if ($this->ERROR) return false;
+            }
+
+            // Артикул товара или характеристики
+            if ($product->Артикул) {
+                $data['sku']		= htmlspecialchars((string)$product->Артикул);
+            }
+
+            // Код товара для прямой синхронизации
+            if ($product->Код) {
+                $data['code']		= $this->parseCode((string)$product->Код);
+            }
+
+            // Пометка удаления, товар будет отключен
+            /*if ((string)$product->ПометкаУдаления == 'true') {
+                $data['status'] = 0;
+            }*/
+
+            // Синхронизация с Яндекс маркет (всегда включено)
+            // В некоторых CMS имеется поле для синхронизаци, например с Yandex
+            /*if (isset($this->TAB_FIELDS['product']['noindex'])) {
+                $data['noindex']		= 1; // В некоторых версиях
+            }*/
+
+            // Описание товара в текстовом формате, нужна опция если описание в формате HTML
+            if ($product->Описание && $this->config->get('exchange1c_import_product_description') == 1)	{
+                if ($this->config->get('exchange1c_description_html') == 1) {
+                    $data['description']	=  nl2br(htmlspecialchars((string)$product->Описание));
+                } else {
+                    $data['description'] 	= (string)$product->Описание;
+                }
+            }
+
+            // Реквизиты товара из торговой системы (разные версии CML)
+            if ($product->ЗначениеРеквизита) {
+                $this->parseRequisite($product, $data);
+                if ($this->ERROR) {
+                    return false;
+                }
+
+            } elseif ($product->ЗначенияРеквизитов) {
+                // Реквизиты (разные версии CML)
+                $this->parseRequisite($product->ЗначенияРеквизитов, $data);
+                if ($this->ERROR) {
+                    return false;
+                }
+            }
+
+            // ВидДетали товара
+            // Читается из поля товара "SKU" или из реквизита "ВидДетали" в зависимости от настроек
+            $data['model']	= $this->parseProductModel($product, $data);
+
+            // Наименование товара или характеристики
+            // Если надо меняет наименование товара из полного или из поля пользователя
+            $this->parseProductName($product, $data);
+            $this->log("> наименование: '" . $data['name'] . "'");
+
+            // Тип номенклатуры ()читается из реквизитов)
+            // Если фильтр по типу номенклатуры заполнен, то загружаем указанные там типы
+            $exchange1c_parse_only_types_item = $this->config->get('exchange1c_parse_only_types_item');
+            if (isset($data['item_type']) && (!empty($exchange1c_parse_only_types_item))) {
+                if (mb_stripos($exchange1c_parse_only_types_item, $data['item_type']) === false) {
+                    continue;
+                }
+            }
+
+            // Если включено обновление категорий
+            /*if ($this->config->get('exchange1c_product_categories') != 'disable') {
+
+                // Категории товара (Группы в 1С)
+                // for default "Запчасти"
+                $product->Группы = 'Запчасти';
+                if ($product->Группы) {
+                    if (isset($classifier['categories'])) {
+                        $data['product_categories']	= $this->parseProductCategories($product->Группы, $classifier['categories']);
+                    } else {
+                        $data['product_categories']	= $this->parseProductCategories($product->Группы);
+                    }
+                }
+            }
+            foreach ($data['product_categories'] as $key => $value) {
+                $this->log('> product_categories: ' . $key . ' ' . $value);
+            }*/
+
+            $data['product_categories'][0] = 60;
 
             // Если включено обновление производителя
             if ($this->config->get('exchange1c_import_product_manufacturer') == 1) {
@@ -5027,15 +5304,28 @@ class ModelExtensionExchange1c extends Model {
             foreach ($data['product_categories'] as $key => $value) {
                 $this->log('> product_categories: ' . $key . ' ' . $value);
             }*/
+            if (!$product->ИдМодели) {
+                $data['product_categories'][0] = 60;
+            } else {
+                $data['product_categories'][0] = 59;
+            }
 
-            $data['product_categories'][0] = 59;
+            // Если включено обновление производителя
+            if ($this->config->get('exchange1c_import_product_manufacturer') == 1) {
+
+                $manufacturer_id = $this->getProductManufacturerId($product, $product->ИдБренда);
+
+                if ($manufacturer_id) {
+                    $data['manufacturer_id'] = $manufacturer_id;
+                }
+            }
 
             // Свойства
 
             $data['attributes'] = [
                 ['attribute_id' => 12, 'value' => $product->ПартНомер],
                 ['attribute_id' => 13, 'value' => $product->НомерПозиции],
-                ['attribute_id' => 14, 'value' => $product->ИдМодели]
+                ['attribute_id' => 14, 'value' => (!$product->ИдМодели) ? $product->ИдВидаДетали : $product->ИдМодели]
             ];
             foreach ($data['attributes'] as $attribute) {
                 $this->log($attribute['attribute_id'] . ' => ' . $attribute['value']);
@@ -5349,6 +5639,12 @@ class ModelExtensionExchange1c extends Model {
         if ($xml->Классификатор->Модели) {
             // Загрузка товаров
             $this->parseModels($xml->Классификатор->Модели, $classifier);
+            //if ($this->ERROR) return false;
+        }
+
+        if ($xml->Классификатор->ВидыДеталей) {
+            // Загрузка товаров
+            $this->parseDetails($xml->Классификатор->ВидыДеталей, $classifier);
             if ($this->ERROR) return false;
         }
 
