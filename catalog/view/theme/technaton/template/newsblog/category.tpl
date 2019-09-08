@@ -13,13 +13,9 @@
                             <h2><?php echo $heading_title; ?></h2>
                             <div class="sort-block">
                                 <form class="form-inline">
-                                    <!--<select name="category" id="category">
+                                    <select name="category" id="category">
                                         <option value="spareParts">По популярности</option>
-                                        <option value="instruments">От дешевых к дорогим</option>
-                                        <option value="consumables">От дорогих к дешевым</option>
-                                        <option value="other">По номеру &#9650;</option>
-                                        <option value="other">По номеру &#9660;</option>
-                                    </select>-->
+                                    </select>
                                     <button class="btn search-btn" type="button">
                                         <a href="/search-form/" class="ajax-popup-search">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="74" height="49" viewBox="0 0 74 49">
@@ -67,7 +63,7 @@
                                     <?php $i++;
                                     } ?>
                             <?php } ?>
-                            </div>
+                        </div>
 
 
                             <?php if (!$categories && !$articles) { ?>
@@ -77,7 +73,7 @@
                                 </div>
                             <?php } ?>
 
-                        </div>
+
                     </div>
                 </div>
             </div>

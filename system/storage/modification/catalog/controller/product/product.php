@@ -155,7 +155,7 @@ class ControllerProductProduct extends Controller {
 		}
 
 		$this->load->model('catalog/product');
-
+        loop:
 		$product_info = $this->model_catalog_product->getProduct($product_id);
 
 		if ($product_info) {
@@ -601,9 +601,23 @@ class ControllerProductProduct extends Controller {
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
 			$data['accessories'] = $this->model_catalog_product->getSquareParts($data['model']);
-            foreach ($data['accessories'] as &$accessory) {
-                $accessory = array_merge($accessory, $this->model_catalog_product->getProductAttributes($accessory['product_id']));
-			}
+			//var_dump($data['accessories']);
+			if ($data['accessories']) {
+                foreach ($data['accessories'] as &$accessory) {
+                    $accessory = array_merge($accessory, $this->model_catalog_product->getProductAttributes($accessory['product_id']));
+                }
+            } else {
+			    if ($data['attribute_groups']) {
+                    $model_id = $data['attribute_groups'][0]['attribute'][0]['text'];
+                    $query = $this->db->query("SELECT product_id FROM `oc_product` WHERE `model` LIKE '$model_id'");
+                    if ($query->num_rows) {
+                        $product_id = $query->row['product_id'];
+                    }
+                    //var_dump($product_id);
+                    goto loop;
+                }
+            }
+
             $data['categories'] = array();
 
             $categories = $this->model_catalog_category->getCategories(0);

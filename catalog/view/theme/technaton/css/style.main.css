@@ -113,6 +113,10 @@
   font-family: "Raleway-ThinItalic";
   src: url("../fonts/Raleway/Raleway-ThinItalic.ttf") format("truetype");
 }
+.page-item.disabled .page-link {
+  cursor: pointer;
+    pointer-events: all;
+}
 .pull-left {
   display: none;
 }
@@ -586,6 +590,7 @@ button:focus {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    padding: .375rem .75rem;
 }
 @media screen and (max-width: 768px) {
   .mainBaner-container .form-wrapper #category {
@@ -2214,6 +2219,9 @@ footer {
 .sort-block .search-btn {
   padding-right: 0;
   padding-left: 20px;
+    padding-top: 0;
+    padding-bottom: 0;
+    box-shadow: none;
 }
 .main-content {
   display: -webkit-box;

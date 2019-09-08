@@ -49,7 +49,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css" crossorigin="anonymous">
 <link rel="stylesheet" href="catalog/view/theme/technaton/css/owl.carousel.min.css">
 <link rel="stylesheet" href="catalog/view/theme/technaton/css/owl.theme.default.min.css">
-<link rel="stylesheet" href="catalog/view/theme/technaton/css/style.main.css?ver=152-08-2019">
+<link rel="stylesheet" href="catalog/view/theme/technaton/css/style.main.css?ver08-09-2019">
 <!-- script -->
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <?php foreach ($scripts as $script) { ?>
