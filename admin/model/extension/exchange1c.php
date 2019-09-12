@@ -4627,7 +4627,7 @@ class ModelExtensionExchange1c extends Model {
 
 	} // parseProducts()
 
-    private function parseModels($xml, $classifier) {
+    private function parseModels($xml, $classifier, $rashod = false) {
 
         if (!$xml->Модель) {
             //$this->ERROR = "parseProducts() - empty XML";
@@ -4750,8 +4750,12 @@ class ModelExtensionExchange1c extends Model {
             foreach ($data['product_categories'] as $key => $value) {
                 $this->log('> product_categories: ' . $key . ' ' . $value);
             }*/
+            if ($rashod) {
+                $data['product_categories'][0] = 61;
+            } else {
+                $data['product_categories'][0] = 59;
+            }
 
-            $data['product_categories'][0] = 59;
 
             // Если включено обновление производителя
             if ($this->config->get('exchange1c_import_product_manufacturer') == 1) {
@@ -4904,7 +4908,7 @@ class ModelExtensionExchange1c extends Model {
 
     }
 
-    private function parseDetails($xml, $classifier) {
+    private function parseDetails($xml, $classifier, $rashod = false) {
 
         if (!$xml->ВидДетали) {
             $this->ERROR = "parseProducts() - empty XML";
@@ -5027,8 +5031,12 @@ class ModelExtensionExchange1c extends Model {
             foreach ($data['product_categories'] as $key => $value) {
                 $this->log('> product_categories: ' . $key . ' ' . $value);
             }*/
+            if ($rashod) {
+                $data['product_categories'][0] = 61;
+            } else {
+                $data['product_categories'][0] = 60;
+            }
 
-            $data['product_categories'][0] = 60;
 
             // Если включено обновление производителя
             if ($this->config->get('exchange1c_import_product_manufacturer') == 1) {
@@ -5181,7 +5189,7 @@ class ModelExtensionExchange1c extends Model {
 
     }
 
-    private function parseAccessories($xml, $classifier) {
+    private function parseAccessories($xml, $classifier, $rashod = false) {
 
         if (!$xml->Комплектующая) {
             $this->ERROR = "parseProducts() - empty XML";
@@ -5304,11 +5312,14 @@ class ModelExtensionExchange1c extends Model {
             foreach ($data['product_categories'] as $key => $value) {
                 $this->log('> product_categories: ' . $key . ' ' . $value);
             }*/
-            if (!$product->ИдМодели) {
+            if ($rashod) {
+                $data['product_categories'][0] = 61;
+            } if (!$product->ИдМодели) {
                 $data['product_categories'][0] = 60;
             } else {
                 $data['product_categories'][0] = 59;
             }
+
 
             // Если включено обновление производителя
             if ($this->config->get('exchange1c_import_product_manufacturer') == 1) {
@@ -5638,19 +5649,35 @@ class ModelExtensionExchange1c extends Model {
 
         if ($xml->Классификатор->Модели) {
             // Загрузка товаров
-            $this->parseModels($xml->Классификатор->Модели, $classifier);
-            //if ($this->ERROR) return false;
+            if ($xml->Классификатор->Модели->Модель &&
+                $xml->Классификатор->ВидыДеталей->ВидДетали &&
+                $xml->Классификатор->Комплектующие->Комплектующая) {
+                $this->parseModels($xml->Классификатор->Модели, $classifier, true);
+            } else {
+                $this->parseModels($xml->Классификатор->Модели, $classifier);
+            }
         }
 
         if ($xml->Классификатор->ВидыДеталей) {
-            // Загрузка товаров
-            $this->parseDetails($xml->Классификатор->ВидыДеталей, $classifier);
+            if ($xml->Классификатор->Модели->Модель &&
+                $xml->Классификатор->ВидыДеталей->ВидДетали &&
+                $xml->Классификатор->Комплектующие->Комплектующая) {
+                $this->parseDetails($xml->Классификатор->ВидыДеталей, $classifier, true);
+            } else {
+                $this->parseDetails($xml->Классификатор->ВидыДеталей, $classifier);
+            }
             if ($this->ERROR) return false;
         }
 
         if ($xml->Классификатор->Комплектующие) {
             // Загрузка комплектующих
-            $this->parseAccessories($xml->Классификатор->Комплектующие, $classifier);
+            if ($xml->Классификатор->Модели->Модель &&
+                $xml->Классификатор->ВидыДеталей->ВидДетали &&
+                $xml->Классификатор->Комплектующие->Комплектующая) {
+                $this->parseAccessories($xml->Классификатор->Комплектующие, $classifier, true);
+            } else {
+                $this->parseAccessories($xml->Классификатор->Комплектующие, $classifier);
+            }
             if ($this->ERROR) return false;
         }
 
